@@ -28,6 +28,23 @@ class Program
 
     private static void CreateHabit()
     {
-        Console.WriteLine("Name of the Habit:");
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            var createCmd = connection.CreateCommand();
+            createCmd.CommandText =
+                @$"CREATE TABLE IF NOT EXISTS habit_tracker (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Date TEXT,
+                Quantity INTEGER
+                )";
+            createCmd.ExecuteNonQuery();
+
+            Console.WriteLine("New table created");
+
+            connection.Close();
+            Console.ReadKey();
+        }
     }
 }
